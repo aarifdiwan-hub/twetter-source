@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: tweeter-source
+  
+  # Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tweeterdb
+    username: tweeter
+    password: tweeter123
+    driver-class-name: org.postgresql.Driver
+  
+  # JPA Configuration
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: tweeter-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+# Server Configuration
+server:
+  port: 8081  # Changed from 8080 since Kafka UI uses 8080
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.test.tweeter_source: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

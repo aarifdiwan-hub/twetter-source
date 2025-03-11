@@ -1,0 +1,22 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: tweeter-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      max-poll-records: 500
+      properties:
+        spring.json.trusted.packages: "com.test.twt.source.model"
+        spring.json.value.default.type: com.test.twt.source.model.Tweet
+
+kafka:
+  topic:
+    tweeter-source: tweeter-source
+  polling:
+    interval: 5000  # Polling interval in milliseconds
+
+logging:
+  level:
+    com.test.twt.source: DEBUG
+    org.apache.kafka: INFO
