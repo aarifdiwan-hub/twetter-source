@@ -48,3 +48,12 @@ git push -u origin main
 
 # Verify remote
 git remote -v
+
+# Add README
+git add README.md
+
+# Commit
+git commit -m "Add README.md"
+
+# Push
+git push origin main
