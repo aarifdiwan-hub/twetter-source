@@ -16,10 +16,10 @@ import java.util.Properties;
 @EnableScheduling
 public class KafkaConfig {
 
-    @Value("${spring.kafka.bootstrap-servers}")
+    @Value("${camel.component.kafka.brokers}")
     private String bootstrapServers;
 
-    @Value("${spring.kafka.consumer.group-id}")
+    @Value("${camel.component.kafka.group-id}")
     private String groupId;
 
     @Bean
@@ -32,8 +32,8 @@ public class KafkaConfig {
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "500");
-        props.put(JsonDeserializer.TRUSTED_PACKAGES, "com.test.twt.source.model");
-        props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, Tweet.class.getName());
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        props.put(JsonDeserializer.TYPE_MAPPINGS, "tweet:com.test.twt.source.model.Tweet");
 
         return new KafkaConsumer<>(props);
     }

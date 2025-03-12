@@ -2,5 +2,20 @@
   "type": "tweet",
   "id": "1234858592",
   "created_timestamp": "1392078023603",
-   "text": "Hello World!"
+  "title": "Consequences of immigration and citizenship fraud",
+  "text": "Check out this link: http://t.co/1234567890",
+  "author": "John Doe",
+  "entities": {
+    "urls": [
+      {
+        "url": "http://t.co/1234567890",
+        "expanded_url": "http://example.com",
+        "display_url": "example.com",
+        "indices": [
+          13,
+          33
+        ]
+      }
+    ]
+  }
 }
