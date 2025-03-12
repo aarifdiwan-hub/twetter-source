@@ -1,0 +1,36 @@
+name: Deploy to AWS CodeArtifact
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: us-east-1 # Change to your AWS region
+
+      - name: Get CodeArtifact token
+        id: get-token
+        run: |
+          echo "CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain your-domain --domain-owner your-account-id --query authorizationToken --output text)" >> $GITHUB_ENV
+
+      - name: Build and publish to CodeArtifact
+        env:
+          CODEARTIFACT_TOKEN: ${{ env.CODEARTIFACT_AUTH_TOKEN }}
+        run: |
+          ./mvnw deploy -s settings.xml

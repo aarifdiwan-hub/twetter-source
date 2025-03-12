@@ -20,6 +20,20 @@ spring:
       password: # leave empty if no password
       database: 0
 
+  jackson:
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: tweet-processor-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
 camel:
   springboot:
     main-run-controller: true
@@ -28,6 +42,9 @@ camel:
       brokers: localhost:9092
       auto-offset-reset: earliest
       group-id: tweet-processor-group
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      additional-properties:
+        spring.json.trusted.packages: "*"
 
 kafka:
   topic:
@@ -40,4 +57,6 @@ logging:
   level:
     root: INFO
     com.test.twt.source: DEBUG
-    org.hibernate.SQL: DEBUG
+    org.apache.camel: DEBUG
+    org.apache.kafka: WARN
+    org.apache.camel.component.kafka: DEBUG

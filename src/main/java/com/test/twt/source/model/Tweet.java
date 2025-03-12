@@ -7,10 +7,12 @@ import java.util.List;
 public record Tweet(
     String type,
     String id,
-    @JsonProperty("created_timestamp") String createdTimestamp,
     String title,
     String text,
     String author,
+    @JsonProperty("created_timestamp") Long createdTimestamp,
+    @JsonProperty("ingestionDateTime") String ingestionDateTime,
+    @JsonProperty("formattedTimestamp") String formattedTimestamp,
     Entities entities
 ) {
     public record Entities(
@@ -26,6 +28,6 @@ public record Tweet(
 
     // Utility method to get timestamp as Instant
     public Instant getCreatedAt() {
-        return Instant.ofEpochMilli(Long.parseLong(createdTimestamp));
+        return Instant.ofEpochMilli(createdTimestamp);
     }
 }
