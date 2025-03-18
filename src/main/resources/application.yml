@@ -1,22 +1,62 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tweeterdb
+    username: tweeter
+    password: tweeter123
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: # leave empty if no password
+      database: 0
+
+  jackson:
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
-      group-id: tweeter-group
+      group-id: tweet-processor-group
       auto-offset-reset: earliest
-      enable-auto-commit: false
-      max-poll-records: 500
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       properties:
-        spring.json.trusted.packages: "com.test.twt.source.model"
-        spring.json.value.default.type: com.test.twt.source.model.Tweet
+        spring.json.trusted.packages: "*"
+
+camel:
+  springboot:
+    main-run-controller: true
+  component:
+    kafka:
+      brokers: localhost:9092
+      auto-offset-reset: earliest
+      group-id: tweet-processor-group
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      additional-properties:
+        spring.json.trusted.packages: "*"
 
 kafka:
   topic:
-    tweeter-source: tweeter-source
-  polling:
-    interval: 5000  # Polling interval in milliseconds
+    tweeter-source: twitter-feed-topic
+
+server:
+  port: 8081
 
 logging:
   level:
+    root: INFO
     com.test.twt.source: DEBUG
-    org.apache.kafka: INFO
+    org.apache.camel: DEBUG
+    org.apache.kafka: WARN
+    org.apache.camel.component.kafka: DEBUG

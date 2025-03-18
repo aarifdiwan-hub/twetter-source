@@ -1,7 +1,11 @@
-# Check container logs
+# Check PostgreSQL container logs
 docker logs tweeter-postgres
-docker logs broker
-docker logs tweeter-kafka-ui
+
+# Check if PostgreSQL is ready
+docker exec tweeter-postgres pg_isready -U tweeter -d tweeterdb
+
+# Verify PostgreSQL connection details
+docker inspect tweeter-postgres | grep IPAddress
 
 # Access PostgreSQL container
 docker exec -it tweeter-postgres psql -U tweeter -d tweeterdb

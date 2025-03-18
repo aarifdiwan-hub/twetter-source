@@ -10,11 +10,15 @@ import org.springframework.stereotype.Service;
 public class TweetKafkaConsumer {
     private static final Logger logger = LoggerFactory.getLogger(TweetKafkaConsumer.class);
 
-    @KafkaListener(topics = "${kafka.topic.tweeter-source:tweeter-source}")
-    public void consume(Tweet tweet) {
-        logger.info("Processing tweet - ID: {}, Created: {}, Text: '{}'",
-            tweet.id(),
-            tweet.getCreatedAt(),
-            tweet.text());
-    }
+//    @KafkaListener(
+//        topics = "${kafka.topic.tweeter-source:tweeter-source}",
+//        groupId = "${spring.kafka.consumer.group-id}",
+//        containerFactory = "kafkaListenerContainerFactory"
+//    )
+//    public void consume(Tweet tweet) {
+//        logger.info("Processing tweet - ID: {}, Created: {}, Text: '{}'",
+//            tweet.id(),
+//            tweet.getCreatedAt(),
+//            tweet.text());
+//    }
 }
